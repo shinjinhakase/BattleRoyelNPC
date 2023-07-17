@@ -2,15 +2,17 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Bot : MonoBehaviour{
+public class Bot : MonoBehaviour {
     
     public Transform target;
-    private NavMeshAgent myAgent;
-
-    public GameObject bullet;
+    public Gun gun;
     public float range;
-
+    public float coolTime;
+    
+    private NavMeshAgent myAgent;
     private float initSpeed;
+    private int coolTimeCount;
+    private bool canShot;
     
     void Start(){
         myAgent = GetComponent<NavMeshAgent>();
@@ -19,16 +21,34 @@ public class Bot : MonoBehaviour{
 
     void Update(){
         myAgent.SetDestination(target.position);
-        distanceCheck();
+        setSpeed();
+        cool();
+        shot();
     }
 
-    void distanceCheck(){
-        if(getDistanceToEnemy() < range){
-            Debug.Log("distance");
-            myAgent.speed = 0;
-        }else{
+    void setSpeed(){
+        if(getDistanceToEnemy() > range){
             myAgent.speed = initSpeed;
+        }else{
+            myAgent.speed = 0;
         }
+    }
+
+    void cool(){
+        coolTimeCount++;
+        if(coolTimeCount > coolTime){
+            canShot = true;
+            coolTimeCount = 0;
+        }else{
+            canShot = false;
+        }
+    }
+
+    void shot(){
+        if(getDistanceToEnemy() > range) return;
+        if(!canShot) return;
+
+        gun.shot(transform.forward);
     }
 
     float getDistanceToEnemy(){
