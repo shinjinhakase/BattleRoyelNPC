@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
     
     public float speed;
+    public float maxSpeed;
 
     private bool hasGetData = false;
     private Vector3 forward;
@@ -20,7 +21,7 @@ public class Bullet : MonoBehaviour {
     }
 
     void Update(){
-        if(hasGetData){
+        if(hasGetData && rb.velocity.magnitude < maxSpeed){
             rb.AddForce(forward * speed);
         }
     }
