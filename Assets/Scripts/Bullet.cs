@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour {
     
     public float speed;
     public float maxSpeed;
+    public float range;
 
     private bool hasGetData = false;
     private Vector3 forward;
@@ -24,6 +25,15 @@ public class Bullet : MonoBehaviour {
         if(hasGetData && rb.velocity.magnitude < maxSpeed){
             rb.AddForce(forward * speed);
         }
+        if(rangeOut()){
+            Destroy(this.gameObject);
+        }
+    }
+
+    bool rangeOut(){
+        float distance = Vector3.Distance(forward,this.transform.position);Debug.Log(distance);
+        if(distance > range) return true;
+        return false;
     }
 
 }
