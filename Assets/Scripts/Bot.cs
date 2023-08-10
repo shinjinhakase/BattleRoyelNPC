@@ -48,11 +48,16 @@ public class Bot : MonoBehaviour {
         if(getDistanceToEnemy() > range) return;
         if(!canShot) return;
 
+        aiming();
         gun.shot(transform.forward);
     }
 
     float getDistanceToEnemy(){
         return Vector3.Distance(this.transform.position,target.position);
+    }
+
+    void aiming(){
+        transform.LookAt(target);
     }
 
 }
