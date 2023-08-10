@@ -9,11 +9,16 @@ public class GameMaster : MonoBehaviour {
     public GameObject Player;
 
     void Start(){
-        for(int i = 0; i < numPlayers; i++){
+        for(int i = 0; i < numPlayers; i++) Instantiate(Player,validVector(),Quaternion.identity);
+    }
+
+    Vector3 validVector(){
+        while(true){
             float x = Random.Range(-fieldExtent,fieldExtent);
             float y = 0f;
             float z = Random.Range(-fieldExtent,fieldExtent);
-            Instantiate(Player,new Vector3(x,y,z),Quaternion.identity);
+            Vector3 checkedVector = new Vector3(x,y,z);
+            if(Physics.OverlapSphere(checkedVector, 0).Length == 0) return checkedVector;
         }
     }
 
