@@ -12,7 +12,7 @@ public class Bot : MonoBehaviour {
     private NavMeshAgent myAgent;
     private float initSpeed;
     private int coolTimeCount;
-    private bool canShot;
+    private bool isCoolComplete;
     
     void Start(){
         myAgent = GetComponent<NavMeshAgent>();
@@ -27,28 +27,45 @@ public class Bot : MonoBehaviour {
     }
 
     void setSpeed(){
-        if(getDistanceToEnemy() > range){
-            myAgent.speed = initSpeed;
-        }else{
+        if(isEnemyInsight() && getDistanceToEnemy() < range){
             myAgent.speed = 0;
+        }else{
+            myAgent.speed = initSpeed;
         }
+    }
+
+    bool isEnemyInsight(){
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(this.transform.position,transform.forward,100.0f);
+        if(isInclude(hits,"Block")) return false;
+        if(isInclude(hits,"Player")) return true;
+        return false;
+    }
+
+    bool isInclude(RaycastHit[] hits,string tag){
+        foreach(RaycastHit hit in hits){
+            if(hit.collider.gameObject.tag == tag){
+                return true;
+            }
+        }
+        return false;
     }
 
     void cool(){
         coolTimeCount++;
         if(coolTimeCount > coolTime){
-            canShot = true;
+            isCoolComplete = true;
             coolTimeCount = 0;
         }else{
-            canShot = false;
+            isCoolComplete = false;
         }
     }
 
     void shot(){
-        if(getDistanceToEnemy() > range) return;
-        if(!canShot) return;
-
         aiming();
+        if(getDistanceToEnemy() > range) return;
+        if(!isEnemyInsight()) return;
+        if(!isCoolComplete) return;
         gun.shot(transform.forward);
     }
 

@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour {
     }
 
     bool rangeOut(){
-        float distance = Vector3.Distance(forward,this.transform.position);Debug.Log(distance);
+        float distance = Vector3.Distance(forward,this.transform.position);
         if(distance > range) return true;
         return false;
     }
