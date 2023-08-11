@@ -8,8 +8,26 @@ public class GameMaster : MonoBehaviour {
     public int fieldExtent;
     public GameObject Player;
 
+    List<GameObject> playerList;
+
     void Start(){
-        for(int i = 0; i < numPlayers; i++) Instantiate(Player,validVector(),Quaternion.identity);
+        generatePlayer();
+    }
+
+    void generatePlayer(){
+        playerList = new List<GameObject>();
+        for(int i = 0; i < numPlayers; i++){
+            GameObject newPlayer = Instantiate(Player) as GameObject;
+            newPlayer.transform.position = validVector();
+            playerList.Add(newPlayer);
+        }
+        //testS
+        string debugLog = "";
+        foreach(GameObject player in playerList){
+            debugLog += "(" + player.transform.position.x.ToString() + "," + player.transform.position.z.ToString() + ")";
+        }
+        Debug.Log(debugLog);
+        //testG
     }
 
     Vector3 validVector(){
