@@ -19,15 +19,9 @@ public class GameMaster : MonoBehaviour {
         for(int i = 0; i < numPlayers; i++){
             GameObject newPlayer = Instantiate(Player) as GameObject;
             newPlayer.transform.position = validVector();
+            newPlayer.GetComponent<Bot>().setGM(this.GetComponent<GameMaster>());
             playerList.Add(newPlayer);
         }
-        //testS
-        string debugLog = "";
-        foreach(GameObject player in playerList){
-            debugLog += "(" + player.transform.position.x.ToString() + "," + player.transform.position.z.ToString() + ")";
-        }
-        Debug.Log(debugLog);
-        //testG
     }
 
     Vector3 validVector(){
@@ -38,6 +32,21 @@ public class GameMaster : MonoBehaviour {
             Vector3 checkedVector = new Vector3(x,y,z);
             if(Physics.OverlapSphere(checkedVector, 0).Length == 0) return checkedVector;
         }
+    }
+
+    public GameObject getTarget(GameObject origin){
+        GameObject answer = null;
+        float minDistance = fieldExtent * 3;
+        foreach(GameObject player in playerList){
+            if(origin == player) continue;
+
+            float distance = Vector3.Distance(origin.transform.position,player.transform.position);
+            if(distance < minDistance){
+                minDistance = distance;
+                answer = player;
+            }
+        }
+        return answer;
     }
 
 }
