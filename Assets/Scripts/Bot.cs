@@ -13,17 +13,28 @@ public class Bot : MonoBehaviour {
     private float initSpeed;
     private int coolTimeCount;
     private bool isCoolComplete;
+    GameMaster gm;
     
+    public void setGM(GameMaster gm){
+        this.gm = gm;
+    }
+
     void Start(){
         myAgent = GetComponent<NavMeshAgent>();
         initSpeed = myAgent.speed;
     }
 
     void Update(){
+        setTarget();
         myAgent.SetDestination(target.position);
         setSpeed();
         cool();
         shot();
+    }
+
+    void setTarget(){
+        if(target != null) return;
+        target = gm.getTarget(this.gameObject).transform;
     }
 
     void setSpeed(){
