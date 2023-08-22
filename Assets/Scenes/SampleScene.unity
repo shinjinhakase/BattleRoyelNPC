@@ -1080,6 +1080,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numPlayers: 10
   numItems: 40
+  footstepsRange: 10
   fieldExtent: 50
   Player: {fileID: 8613956416708448383, guid: 34bc7f1fdd75299459c8ea50a5af5235, type: 3}
   Item: {fileID: 2635838342640786076, guid: 390f2855294ba54469728c3568bda22e, type: 3}

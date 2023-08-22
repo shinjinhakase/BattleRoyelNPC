@@ -6,6 +6,7 @@ public class GameMaster : MonoBehaviour {
     
     public int numPlayers;
     public int numItems;
+    public int footstepsRange;
     public int fieldExtent;
     public GameObject Player;
     public GameObject Item;
@@ -45,6 +46,13 @@ public class GameMaster : MonoBehaviour {
     }
 
     public GameObject getTarget(GameObject origin){
+        GameObject nearestPlayer = getNearestPlayer(origin);
+        if(Vector3.Distance(origin.transform.position,nearestPlayer.transform.position) < footstepsRange) return nearestPlayer;
+        GameObject nearestItem = getNearestItem(origin);
+        return nearestItem;
+    }
+
+    GameObject getNearestPlayer(GameObject origin){
         GameObject answer = null;
         float minDistance = fieldExtent * 3;
         foreach(GameObject player in playerList){
@@ -54,6 +62,19 @@ public class GameMaster : MonoBehaviour {
             if(distance < minDistance){
                 minDistance = distance;
                 answer = player;
+            }
+        }
+        return answer;
+    }
+
+    GameObject getNearestItem(GameObject origin){
+        GameObject answer = null;
+        float minDistance = fieldExtent * 3;
+        foreach(GameObject item in GameObject.FindGameObjectsWithTag("Item")){
+            float distance = Vector3.Distance(origin.transform.position,item.transform.position);
+            if(distance < minDistance){
+                minDistance = distance;
+                answer = item;
             }
         }
         return answer;
