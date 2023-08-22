@@ -5,13 +5,23 @@ using UnityEngine;
 public class GameMaster : MonoBehaviour {
     
     public int numPlayers;
+    public int numItems;
     public int fieldExtent;
     public GameObject Player;
+    public GameObject Item;
 
     List<GameObject> playerList;
 
     void Start(){
+        generateItem();
         generatePlayer();
+    }
+
+    void generateItem(){
+        for(int i = 0; i < numItems; i++){
+            GameObject newItem = Instantiate(Item) as GameObject;
+            newItem.transform.position = validVector();
+        }
     }
 
     void generatePlayer(){
